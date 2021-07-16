@@ -22,6 +22,6 @@ public class MealPlan {
     private boolean weeklyDropOff;
     private MealPlanType type;
     private Map<Integer, MealSchedule> meals;
-    private boolean isCustom;
+    private boolean custom;
 
 }

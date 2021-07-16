@@ -21,9 +21,8 @@ public interface MealPlanRepository extends MongoRepository<MealPlan, String> {
 
     List<MealPlan> findMealPlanByWeeklyDropOffIsTrue(Pageable page);
 
-    List<MealPlan> findMealPlanByCustomIsTrue(Pageable page);
+    List<MealPlan> findMealPlanByCustomIs(boolean isCustom, Pageable page);
 
-    List<MealPlan> findMealPlanByCustomIsFalse(Pageable page);
 
     List<MealPlan> findMealPlanByType(MealPlanType type, Pageable page);
 
