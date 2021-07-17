@@ -1,12 +1,20 @@
 package com.semicolon.healthyeatsmealservice.services;
 
+import com.semicolon.healthyeatsmealservice.controllers.requests.FilterRequest;
 import com.semicolon.healthyeatsmealservice.data.models.Meal;
 import com.semicolon.healthyeatsmealservice.data.repository.MealRepository;
 import com.semicolon.healthyeatsmealservice.exceptions.MealException;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MealServiceImpl implements MealService {
@@ -15,6 +23,8 @@ public class MealServiceImpl implements MealService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    private final int pageSize = 20;
 
 
     @Override
@@ -52,9 +62,62 @@ public class MealServiceImpl implements MealService {
 
     }
 
+    @Override
+    public List<MealDTO> getAllMeals(int pageNumber) {
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        return mealRepository.findAll(page)
+                .stream()
+                .map(meal -> modelMapper.map(meal, MealDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MealDTO> searchMeal(String query, int pageNumber) {
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        return mealRepository.findMealByNameContaining(query, page)
+                .stream()
+                .map(meal -> modelMapper.map(meal, MealDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MealDTO> filterMeals(FilterRequest filterRequest, int pageNumber) {
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        List<MealDTO> filterResults = new ArrayList<>();
+        if (filterRequest.isFilterByCalorie()) {
+            int calorieCount = filterRequest.getCalorieCount();
+            if (filterRequest.isFilterLess()) {
+                filterResults = mealRepository.findMealByCalorieCountLessThanEqual(calorieCount, page)
+                        .stream()
+                        .map(meal -> modelMapper.map(meal, MealDTO.class))
+                        .collect(Collectors.toList());
+            } else {
+                filterResults = mealRepository.findMealByCalorieCountGreaterThanEqual(calorieCount, page)
+                        .stream()
+                        .map(meal -> modelMapper.map(meal, MealDTO.class))
+                        .collect(Collectors.toList());
+            }
+        } else if (filterRequest.isFilterByPrice()) {
+            BigDecimal price = filterRequest.getPrice();
+            if (filterRequest.isFilterLess()) {
+                filterResults = mealRepository.findMealByPriceLessThanEqual(price, page)
+                        .stream()
+                        .map(meal -> modelMapper.map(meal, MealDTO.class))
+                        .collect(Collectors.toList());
+            } else {
+                filterResults = mealRepository.findMealByPriceGreaterThanEqual(price, page)
+                        .stream()
+                        .map(meal -> modelMapper.map(meal, MealDTO.class))
+                        .collect(Collectors.toList());
+            }
+        }
+        return filterResults;
+    }
+
     private Meal findMealByMealId(String id) throws MealException {
         return mealRepository.findById(id)
                 .orElseThrow(() -> new MealException("No meal found with Id: " + id));
     }
+
 
 }

@@ -3,6 +3,7 @@ package com.semicolon.healthyeatsmealservice.services;
 import com.semicolon.healthyeatsmealservice.data.models.MealPlan;
 import com.semicolon.healthyeatsmealservice.data.repository.MealPlanRepository;
 import com.semicolon.healthyeatsmealservice.exceptions.MealPlanException;
+import com.semicolon.healthyeatsmealservice.services.dtos.MealDTO;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealPlanDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,8 @@ public class MealPlanServiceImpl implements MealPlanService {
         MealPlan mealPlanToDelete = getMealPlan(planId);
         mealPlanRepository.delete(mealPlanToDelete);
     }
+
+
 
     private MealPlan getMealPlan(String planId) throws MealPlanException {
         return mealPlanRepository.findById(planId)

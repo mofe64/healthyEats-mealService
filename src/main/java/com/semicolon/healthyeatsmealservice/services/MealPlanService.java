@@ -1,6 +1,7 @@
 package com.semicolon.healthyeatsmealservice.services;
 
 import com.semicolon.healthyeatsmealservice.exceptions.MealPlanException;
+import com.semicolon.healthyeatsmealservice.services.dtos.MealDTO;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealPlanDTO;
 import org.springframework.stereotype.Service;
 
