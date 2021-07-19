@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -24,5 +26,7 @@ public class MealPlan {
     private MealPlanType type;
     private Map<Integer, MealSchedule> meals = new HashMap<>();
     private boolean custom;
+    @DBRef(db = "user")
+    private List<User> subscribedUsers;
 
 }
