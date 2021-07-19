@@ -15,6 +15,7 @@ public interface MealRepository  extends MongoRepository<Meal, String> {
     List<Meal> findMealByNameContaining(String searchPhrase, Pageable page);
     List<Meal> findMealByPriceGreaterThanEqual(BigDecimal price, Pageable page);
     List<Meal> findMealByPriceLessThanEqual(BigDecimal price, Pageable page);
+    List<Meal> findMealByPriceGreaterThan(BigDecimal price, Pageable page);
     List<Meal> findMealByCalorieCountLessThanEqual(Integer calorieCount, Pageable page);
     List<Meal> findMealByCalorieCountGreaterThanEqual(Integer calorieCount, Pageable page);
 

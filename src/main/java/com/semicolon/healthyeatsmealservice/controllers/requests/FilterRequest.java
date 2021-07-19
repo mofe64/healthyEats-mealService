@@ -10,5 +10,5 @@ public class FilterRequest {
     private boolean filterByPrice;
     private boolean filterLess;
     private int calorieCount;
-    private BigDecimal price;
+    private double price;
 }

@@ -19,14 +19,10 @@ public class MealPlanController {
 
 
     @GetMapping("")
-    public ResponseEntity<?> getMealPlans() {
-        int pageNumber = 0;
-        List<MealPlanDTO> mealPlans = mealPlanService.getAllMealPlans(pageNumber);
-        return new ResponseEntity<>(mealPlans, HttpStatus.OK);
-    }
-
-    @GetMapping("")
-    public ResponseEntity<?> getMealPlans(@RequestParam(name = "page") int page) {
+    public ResponseEntity<?> getMealPlans(@RequestParam(name = "page", required = false) Integer page) {
+        if (page == null) {
+            page = 0;
+        }
         List<MealPlanDTO> mealPlans = mealPlanService.getAllMealPlans(page);
         return new ResponseEntity<>(mealPlans, HttpStatus.OK);
     }
@@ -43,7 +39,7 @@ public class MealPlanController {
         }
     }
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<?> createMealPlan(@RequestBody MealPlanDTO mealPlanDTO) {
         MealPlanDTO savedMealPlan = mealPlanService.createMealPlan(mealPlanDTO);
         return new ResponseEntity<>(savedMealPlan, HttpStatus.CREATED);

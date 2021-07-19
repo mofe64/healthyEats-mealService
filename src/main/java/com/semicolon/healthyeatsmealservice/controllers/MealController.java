@@ -19,36 +19,33 @@ public class MealController {
     @Autowired
     private MealService mealService;
 
-    @GetMapping("")
-    public ResponseEntity<?> getAllMeals() {
-        int pageNumber = 0;
-        List<MealDTO> meals = mealService.getAllMeals(pageNumber);
-        return new ResponseEntity<>(meals, HttpStatus.OK);
-    }
 
     @GetMapping("")
-    public ResponseEntity<?> getAllMeals(@RequestParam(name = "page") int page) {
+    public ResponseEntity<?> getAllMeals(@RequestParam(name = "page", required = false) Integer page) {
+        if (page == null) {
+            page = 0;
+        }
         List<MealDTO> meals = mealService.getAllMeals(page);
         return new ResponseEntity<>(meals, HttpStatus.OK);
     }
 
-    @GetMapping("")
-    public ResponseEntity<?> mealSearch(@RequestParam(name = "query") String name) {
+    @GetMapping("/search/{query}")
+    public ResponseEntity<?> mealSearch(@PathVariable String query) {
         int pageNumber = 0;
-        List<MealDTO> searchResults = mealService.searchMeal(name, pageNumber);
+        List<MealDTO> searchResults = mealService.searchMeal(query, pageNumber);
         return new ResponseEntity<>(searchResults, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<?> mealSearch(@RequestParam(name = "query") String name, @RequestParam(name = "page") int page) {
-        List<MealDTO> searchResults = mealService.searchMeal(name, page);
+    @GetMapping("/search/{query}/{page}")
+    public ResponseEntity<?> mealSearch(@PathVariable String query, @PathVariable int page) {
+        List<MealDTO> searchResults = mealService.searchMeal(query, page);
         return new ResponseEntity<>(searchResults, HttpStatus.OK);
     }
 
-    @GetMapping("")
-    public ResponseEntity<?> exactMealSearch(@RequestParam(name = "exactQuery") String name) {
+    @GetMapping("/search/exact/{query}")
+    public ResponseEntity<?> exactMealSearch(@PathVariable String query) {
         try {
-            MealDTO meal = mealService.findMealByName(name);
+            MealDTO meal = mealService.findMealByName(query);
             return new ResponseEntity<>(meal, HttpStatus.OK);
         } catch (MealException exception) {
             return new ResponseEntity<>(new APIResponse(false, exception.getMessage()), HttpStatus.BAD_REQUEST);
@@ -57,15 +54,15 @@ public class MealController {
         }
     }
 
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public ResponseEntity<?> filterMeals(@RequestBody FilterRequest filterRequest) {
         List<MealDTO> filteredMeals = mealService.filterMeals(filterRequest, 0);
         return new ResponseEntity<>(filteredMeals, HttpStatus.OK);
     }
 
-    @GetMapping("/filter")
-    public ResponseEntity<?> filterMeals(@RequestParam(name = "page") int pageNumber, @RequestBody FilterRequest filterRequest) {
-        List<MealDTO> filteredMeals = mealService.filterMeals(filterRequest, pageNumber);
+    @PostMapping("/filter/{pageNo}")
+    public ResponseEntity<?> filterMeals(@PathVariable int pageNo, @RequestBody FilterRequest filterRequest) {
+        List<MealDTO> filteredMeals = mealService.filterMeals(filterRequest, pageNo);
         return new ResponseEntity<>(filteredMeals, HttpStatus.OK);
     }
 
@@ -75,7 +72,7 @@ public class MealController {
         return new ResponseEntity<>(savedMeal, HttpStatus.CREATED);
     }
 
-    @GetMapping("{mealId}")
+    @GetMapping("/{mealId}")
     public ResponseEntity<?> getAMeal(@PathVariable String mealId) {
         try {
             MealDTO meal = mealService.findMealById(mealId);
