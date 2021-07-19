@@ -1,6 +1,5 @@
 package com.semicolon.healthyeatsmealservice.services.dtos;
 
-import com.semicolon.healthyeatsmealservice.data.models.MealPlanType;
 import com.semicolon.healthyeatsmealservice.data.models.MealSchedule;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +17,7 @@ public class MealPlanDTO {
     private boolean active;
     private boolean dailyDropOff;
     private boolean weeklyDropOff;
-    private MealPlanType type;
-    private Map<Integer, MealSchedule> meals;
+    private String type;
+    private Map<Integer, MealScheduleDTO> meals;
     private boolean custom;
 }

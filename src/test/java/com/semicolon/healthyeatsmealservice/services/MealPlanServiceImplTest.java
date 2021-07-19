@@ -2,6 +2,7 @@ package com.semicolon.healthyeatsmealservice.services;
 
 import com.semicolon.healthyeatsmealservice.data.models.MealPlan;
 import com.semicolon.healthyeatsmealservice.data.repository.MealPlanRepository;
+import com.semicolon.healthyeatsmealservice.exceptions.MealException;
 import com.semicolon.healthyeatsmealservice.exceptions.MealPlanException;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealPlanDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -97,7 +98,7 @@ class MealPlanServiceImplTest {
     }
 
     @Test
-    void createMealPlan() {
+    void createMealPlan() throws MealException {
         //when
         mealPlanService.createMealPlan(mealPlanDTO);
         //then

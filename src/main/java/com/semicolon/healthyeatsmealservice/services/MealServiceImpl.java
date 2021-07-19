@@ -119,6 +119,11 @@ public class MealServiceImpl implements MealService {
         return filterResults;
     }
 
+    @Override
+    public Meal internalGetMeal(String mealId) throws MealException {
+        return mealRepository.findById(mealId).orElse(null);
+    }
+
     private Meal findMealByMealId(String id) throws MealException {
         return mealRepository.findById(id)
                 .orElseThrow(() -> new MealException("No meal found with Id: " + id));

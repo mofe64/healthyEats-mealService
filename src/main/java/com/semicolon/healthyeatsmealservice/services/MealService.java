@@ -1,6 +1,7 @@
 package com.semicolon.healthyeatsmealservice.services;
 
 import com.semicolon.healthyeatsmealservice.controllers.requests.FilterRequest;
+import com.semicolon.healthyeatsmealservice.data.models.Meal;
 import com.semicolon.healthyeatsmealservice.exceptions.MealException;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealDTO;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,6 @@ public interface MealService {
     List<MealDTO> getAllMeals(int pageNumber);
     List<MealDTO> searchMeal(String query, int pageNumber);
     List<MealDTO> filterMeals(FilterRequest filterRequest, int pageNumber);
+    Meal internalGetMeal(String mealId) throws MealException;
     //todo orderMeal, getMealsMatchingPreference;
 }

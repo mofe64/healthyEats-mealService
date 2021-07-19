@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -17,11 +18,11 @@ public class MealPlan {
     private String id;
     private String name;
     private int durationInDays;
-    private boolean active;
+    private boolean active = true;
     private boolean dailyDropOff;
     private boolean weeklyDropOff;
     private MealPlanType type;
-    private Map<Integer, MealSchedule> meals;
+    private Map<Integer, MealSchedule> meals = new HashMap<>();
     private boolean custom;
 
 }

@@ -1,6 +1,7 @@
 package com.semicolon.healthyeatsmealservice.controllers;
 
 import com.semicolon.healthyeatsmealservice.controllers.responses.APIResponse;
+import com.semicolon.healthyeatsmealservice.exceptions.MealException;
 import com.semicolon.healthyeatsmealservice.exceptions.MealPlanException;
 import com.semicolon.healthyeatsmealservice.services.MealPlanService;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealPlanDTO;
@@ -41,8 +42,13 @@ public class MealPlanController {
 
     @PostMapping("")
     public ResponseEntity<?> createMealPlan(@RequestBody MealPlanDTO mealPlanDTO) {
-        MealPlanDTO savedMealPlan = mealPlanService.createMealPlan(mealPlanDTO);
-        return new ResponseEntity<>(savedMealPlan, HttpStatus.CREATED);
+        try {
+            MealPlanDTO savedMealPlan = mealPlanService.createMealPlan(mealPlanDTO);
+            return new ResponseEntity<>(savedMealPlan, HttpStatus.CREATED);
+        } catch (MealException exception) {
+            return new ResponseEntity<>(new APIResponse(false, "Looks like something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @PatchMapping("{planId}")
