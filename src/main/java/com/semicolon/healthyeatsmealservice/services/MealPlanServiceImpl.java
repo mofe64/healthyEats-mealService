@@ -121,6 +121,21 @@ public class MealPlanServiceImpl implements MealPlanService {
         mealPlanRepository.delete(mealPlanToDelete);
     }
 
+    @Override
+    public MealPlan subscribeUserToMealPlan(User user, String planId) throws MealPlanException {
+        MealPlan plan = getMealPlan(planId);
+        plan.addUser(user);
+        return mealPlanRepository.save(plan);
+    }
+
+    @Override
+    public MealPlan unsubscribeUserFromMealPlan(User user, String planId) throws MealPlanException {
+        MealPlan plan = getMealPlan(planId);
+        plan.removeUser(user);
+        return mealPlanRepository.save(plan);
+
+    }
+
 
     private MealPlan getMealPlan(String planId) throws MealPlanException {
         return mealPlanRepository.findById(planId)

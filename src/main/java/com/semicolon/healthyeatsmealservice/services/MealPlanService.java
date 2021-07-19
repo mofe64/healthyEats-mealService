@@ -1,6 +1,8 @@
 package com.semicolon.healthyeatsmealservice.services;
 
 import com.semicolon.healthyeatsmealservice.data.models.Meal;
+import com.semicolon.healthyeatsmealservice.data.models.MealPlan;
+import com.semicolon.healthyeatsmealservice.data.models.User;
 import com.semicolon.healthyeatsmealservice.exceptions.MealException;
 import com.semicolon.healthyeatsmealservice.exceptions.MealPlanException;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealDTO;
@@ -17,5 +19,7 @@ public interface MealPlanService {
     MealPlanDTO createMealPlan(MealPlanDTO mealPlanDTO) throws MealException;
     MealPlanDTO updateMealPlan(String planId, MealPlanDTO mealPlanDTO) throws MealPlanException;
     void deleteMealPlan(String planId) throws MealPlanException;
+    MealPlan subscribeUserToMealPlan(User user, String planId) throws MealPlanException;
+    MealPlan unsubscribeUserFromMealPlan(User user, String plantId) throws MealPlanException;
     //todo getMealPlansMatchingPreference;
 }
