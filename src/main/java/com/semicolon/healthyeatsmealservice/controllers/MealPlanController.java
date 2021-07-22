@@ -7,6 +7,7 @@ import com.semicolon.healthyeatsmealservice.exceptions.MealException;
 import com.semicolon.healthyeatsmealservice.exceptions.MealPlanException;
 import com.semicolon.healthyeatsmealservice.services.MealPlanService;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealPlanDTO;
+import com.semicolon.healthyeatsmealservice.services.dtos.MealPlanResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,14 @@ public class MealPlanController {
         if (page == null) {
             page = 0;
         }
-        List<MealPlanDTO> mealPlans = mealPlanService.getAllMealPlans(page);
+        List<MealPlanResponseDTO> mealPlans = mealPlanService.getAllMealPlans(page);
         return new ResponseEntity<>(mealPlans, HttpStatus.OK);
     }
 
     @GetMapping("{planId}")
     public ResponseEntity<?> getMealPlan(@PathVariable String planId) {
         try {
-            MealPlanDTO mealPlan = mealPlanService.getMealPlanById(planId);
+            MealPlanResponseDTO mealPlan = mealPlanService.getMealPlanById(planId);
             return new ResponseEntity<>(mealPlan, HttpStatus.OK);
         } catch (MealPlanException exception) {
             return new ResponseEntity<>(new APIResponse(false, exception.getMessage()), HttpStatus.BAD_REQUEST);
@@ -45,18 +46,27 @@ public class MealPlanController {
     @PostMapping("")
     public ResponseEntity<?> createMealPlan(@RequestBody MealPlanDTO mealPlanDTO) {
         try {
-            MealPlanDTO savedMealPlan = mealPlanService.createMealPlan(mealPlanDTO);
+            MealPlanResponseDTO savedMealPlan = mealPlanService.createMealPlan(mealPlanDTO, false);
             return new ResponseEntity<>(savedMealPlan, HttpStatus.CREATED);
         } catch (MealException exception) {
             return new ResponseEntity<>(new APIResponse(false, "Looks like something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    @PostMapping("/custom")
+    public ResponseEntity<?> createCustomMealPlan(@RequestBody MealPlanDTO mealPlanDTO) {
+        try {
+            MealPlanResponseDTO savedMealPlan = mealPlanService.createMealPlan(mealPlanDTO, true);
+            return new ResponseEntity<>(savedMealPlan, HttpStatus.CREATED);
+        } catch (MealException exception) {
+            return new ResponseEntity<>(new APIResponse(false, "Looks like something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PatchMapping("{planId}")
     public ResponseEntity<?> updateMealPlan(@PathVariable String planId, @RequestBody MealPlanDTO mealPlanDTO) {
         try {
-            MealPlanDTO updatedMealPlan = mealPlanService.updateMealPlan(planId, mealPlanDTO);
+            MealPlanResponseDTO updatedMealPlan = mealPlanService.updateMealPlan(planId, mealPlanDTO);
             return new ResponseEntity<>(updatedMealPlan, HttpStatus.OK);
         } catch (MealPlanException exception) {
             return new ResponseEntity<>(new APIResponse(false, exception.getMessage()), HttpStatus.BAD_REQUEST);

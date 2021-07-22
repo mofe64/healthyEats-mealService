@@ -7,17 +7,18 @@ import com.semicolon.healthyeatsmealservice.exceptions.MealException;
 import com.semicolon.healthyeatsmealservice.exceptions.MealPlanException;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealDTO;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealPlanDTO;
+import com.semicolon.healthyeatsmealservice.services.dtos.MealPlanResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface MealPlanService {
-    MealPlanDTO getMealPlanById(String mealPlanId) throws MealPlanException;
-    MealPlanDTO getMealPlanByName(String mealPlanName) throws MealPlanException;
-    List<MealPlanDTO> getAllMealPlans(int pageNumber);
-    MealPlanDTO createMealPlan(MealPlanDTO mealPlanDTO) throws MealException;
-    MealPlanDTO updateMealPlan(String planId, MealPlanDTO mealPlanDTO) throws MealPlanException;
+    MealPlanResponseDTO getMealPlanById(String mealPlanId) throws MealPlanException;
+    MealPlanResponseDTO getMealPlanByName(String mealPlanName) throws MealPlanException;
+    List<MealPlanResponseDTO> getAllMealPlans(int pageNumber);
+    MealPlanResponseDTO createMealPlan(MealPlanDTO mealPlanDTO, boolean isCustom) throws MealException;
+    MealPlanResponseDTO updateMealPlan(String planId, MealPlanDTO mealPlanDTO) throws MealPlanException;
     void deleteMealPlan(String planId) throws MealPlanException;
     MealPlan subscribeUserToMealPlan(User user, String planId) throws MealPlanException;
     MealPlan unsubscribeUserFromMealPlan(User user, String plantId) throws MealPlanException;

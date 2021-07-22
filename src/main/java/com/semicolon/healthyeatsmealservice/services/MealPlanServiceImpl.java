@@ -6,6 +6,7 @@ import com.semicolon.healthyeatsmealservice.exceptions.MealException;
 import com.semicolon.healthyeatsmealservice.exceptions.MealPlanException;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealDTO;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealPlanDTO;
+import com.semicolon.healthyeatsmealservice.services.dtos.MealPlanResponseDTO;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealScheduleDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -36,29 +37,29 @@ public class MealPlanServiceImpl implements MealPlanService {
     private final int pageSize = 20;
 
     @Override
-    public MealPlanDTO getMealPlanById(String mealPlanId) throws MealPlanException {
+    public MealPlanResponseDTO getMealPlanById(String mealPlanId) throws MealPlanException {
         MealPlan plan = getMealPlan(mealPlanId);
-        return modelMapper.map(plan, MealPlanDTO.class);
+        return modelMapper.map(plan, MealPlanResponseDTO.class);
     }
 
     @Override
-    public MealPlanDTO getMealPlanByName(String mealPlanName) throws MealPlanException {
+    public MealPlanResponseDTO getMealPlanByName(String mealPlanName) throws MealPlanException {
         MealPlan plan = mealPlanRepository.findMealPlanByName(mealPlanName)
                 .orElseThrow(() -> new MealPlanException("No meal plan found with name: " + mealPlanName));
-        return modelMapper.map(plan, MealPlanDTO.class);
+        return modelMapper.map(plan, MealPlanResponseDTO.class);
     }
 
     @Override
-    public List<MealPlanDTO> getAllMealPlans(int pageNumber) {
+    public List<MealPlanResponseDTO> getAllMealPlans(int pageNumber) {
         Pageable page = PageRequest.of(pageNumber, pageSize);
         return mealPlanRepository.findAll(page)
                 .stream()
-                .map(mealPlan -> modelMapper.map(mealPlan, MealPlanDTO.class))
+                .map(mealPlan -> modelMapper.map(mealPlan, MealPlanResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public MealPlanDTO createMealPlan(MealPlanDTO mealPlanDTO) throws MealException {
+    public MealPlanResponseDTO createMealPlan(MealPlanDTO mealPlanDTO, boolean isCustom) throws MealException {
         MealPlan mealPlan = modelMapper.map(mealPlanDTO, MealPlan.class);
         mealPlan.setName(mealPlanDTO.getName().toLowerCase(Locale.ROOT));
         String specifiedMealPlanType = mealPlanDTO.getType();
@@ -103,16 +104,17 @@ public class MealPlanServiceImpl implements MealPlanService {
             mealsToSave.put(day, mealScheduleForCurrentDay);
         }
         mealPlan.setMeals(mealsToSave);
+        mealPlan.setCustom(isCustom);
         mealPlan = mealPlanRepository.save(mealPlan);
-        return modelMapper.map(mealPlan, MealPlanDTO.class);
+        return modelMapper.map(mealPlan, MealPlanResponseDTO.class);
     }
 
     @Override
-    public MealPlanDTO updateMealPlan(String planId, MealPlanDTO mealPlanDTO) throws MealPlanException {
+    public MealPlanResponseDTO updateMealPlan(String planId, MealPlanDTO mealPlanDTO) throws MealPlanException {
         MealPlan mealPlanToUpdate = getMealPlan(planId);
         modelMapper.map(mealPlanDTO, mealPlanToUpdate);
         MealPlan updatedMealPlan = mealPlanRepository.save(mealPlanToUpdate);
-        return modelMapper.map(updatedMealPlan, MealPlanDTO.class);
+        return modelMapper.map(updatedMealPlan, MealPlanResponseDTO.class);
     }
 
     @Override

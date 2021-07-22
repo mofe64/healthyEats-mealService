@@ -100,7 +100,7 @@ class MealPlanServiceImplTest {
     @Test
     void createMealPlan() throws MealException {
         //when
-        mealPlanService.createMealPlan(mealPlanDTO);
+        mealPlanService.createMealPlan(mealPlanDTO, false);
         //then
         verify(mealPlanRepository).save(any());
     }

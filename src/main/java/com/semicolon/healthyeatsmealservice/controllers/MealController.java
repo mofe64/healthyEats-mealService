@@ -5,6 +5,7 @@ import com.semicolon.healthyeatsmealservice.controllers.responses.APIResponse;
 import com.semicolon.healthyeatsmealservice.exceptions.MealException;
 import com.semicolon.healthyeatsmealservice.services.MealService;
 import com.semicolon.healthyeatsmealservice.services.dtos.MealDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/mealService/api/v1/meals")
+@Slf4j
 public class MealController {
 
     @Autowired
@@ -21,7 +23,8 @@ public class MealController {
 
 
     @GetMapping("")
-    public ResponseEntity<?> getAllMeals(@RequestParam(name = "page", required = false) Integer page) {
+    public ResponseEntity<?> getAllMeals(@RequestParam(name = "page", required = false) Integer page, @RequestHeader String roles) {
+        log.info(roles);
         if (page == null) {
             page = 0;
         }
