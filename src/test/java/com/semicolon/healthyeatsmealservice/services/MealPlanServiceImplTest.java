@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 
+import java.util.HashMap;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -100,6 +101,11 @@ class MealPlanServiceImplTest {
     @Test
     void createMealPlan() throws MealException {
         //when
+        mealPlan1.setName("some name");
+        when(modelMapper.map(mealPlanDTO, MealPlan.class)).thenReturn(mealPlan1);
+        mealPlanDTO.setName("some name");
+        mealPlanDTO.setType("MONTHLY");
+        mealPlanDTO.setMeals(new HashMap<>());
         mealPlanService.createMealPlan(mealPlanDTO, false);
         //then
         verify(mealPlanRepository).save(any());

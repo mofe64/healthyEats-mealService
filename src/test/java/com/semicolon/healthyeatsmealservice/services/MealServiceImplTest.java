@@ -45,6 +45,8 @@ class MealServiceImplTest {
     void createMeal() {
         //given
         mealDTO.setName("some meal");
+        meal.setName("some meal");
+        when(modelMapper.map(mealDTO, Meal.class)).thenReturn(meal);
         //when
         mealService.createMeal(mealDTO);
         //then
@@ -122,7 +124,7 @@ class MealServiceImplTest {
         //when
         mealService.findMealByName("someName");
         //then
-        verify(mealRepository).findMealByName("someName");
+        verify(mealRepository).findMealByName("somename");
     }
 
     @Test

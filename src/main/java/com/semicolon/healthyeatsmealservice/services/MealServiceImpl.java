@@ -33,6 +33,7 @@ public class MealServiceImpl implements MealService {
     @Override
     public MealDTO createMeal(MealDTO mealDTO) {
         Meal mealObj = modelMapper.map(mealDTO, Meal.class);
+        log.info("{}",mealObj);
         mealObj.setName(mealObj.getName().toLowerCase(Locale.ROOT));
         Meal savedMeal = mealRepository.save(mealObj);
         return modelMapper.map(savedMeal, MealDTO.class);

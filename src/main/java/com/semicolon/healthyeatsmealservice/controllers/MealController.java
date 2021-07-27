@@ -21,7 +21,6 @@ public class MealController {
     @Autowired
     private MealService mealService;
 
-
     @GetMapping("")
     public ResponseEntity<?> getAllMeals(@RequestParam(name = "page", required = false) Integer page, @RequestHeader String roles) {
         log.info(roles);

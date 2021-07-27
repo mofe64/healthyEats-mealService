@@ -60,7 +60,9 @@ class MealRepositoryTest {
     @Test
     void findMealByPriceGreaterThanEqual() {
         meal.setPrice(BigDecimal.valueOf(100.12));
-        meal1.setPrice(BigDecimal.valueOf(110.34));
+        meal1.setPrice(BigDecimal.valueOf(110));
+        mealRepository.save(meal);
+        mealRepository.save(meal1);
         List<Meal> meals = mealRepository.findMealByPriceGreaterThanEqual(BigDecimal.valueOf(110), page);
         assertThat(meals).isNotEmpty();
         assertThat(meals).hasSize(1);
