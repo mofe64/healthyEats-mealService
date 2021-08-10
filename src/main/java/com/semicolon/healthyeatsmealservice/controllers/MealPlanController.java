@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/mealService/api/v1/mealPlans")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class MealPlanController {
     @Autowired
     private MealPlanService mealPlanService;

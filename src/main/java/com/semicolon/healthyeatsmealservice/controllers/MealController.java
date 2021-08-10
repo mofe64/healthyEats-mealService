@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/mealService/api/v1/meals")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @Slf4j
 public class MealController {
 
